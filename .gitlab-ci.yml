@@ -1,0 +1,42 @@
+image: malkinfedor/golang-gitlab-image:1
+
+stages:
+  - test
+  - build
+
+unit_tests:
+  stage: test
+  script:
+    - go test -short
+
+race_detector:
+  stage: test
+  script:
+    - go test -race -short
+
+#memory_sanitizer:
+#  stage: test
+#  script:
+#    - make msan
+
+#code_coverage:
+#  stage: test
+#  script:
+#    - make coverage
+
+#code_coverage_report:
+#  stage: test
+#  script:
+#    - make coverhtml
+#  only:
+#  - master
+
+lint_code:
+  stage: test
+  script:
+    - golint -set_exit_status
+
+build:
+  stage: build
+  script:
+    - go build -i -v
