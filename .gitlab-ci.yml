@@ -62,10 +62,10 @@ lint_code:
 docker-build:
   image: docker:19.03.13
   before_script:
-    - mkdir -p ~/.docker/ 
-    - cp -r docker-config.json /root/.docker/config.json 
-    - cat /root/.docker/config.json 
+#    - mkdir -p ~/.docker/ 
+#    - cp -r docker-config.json /root/.docker/config.json 
     - docker login -u malkinfedor -p 3165420c-9395-443b-98b0-f19b01d82689
+    - cat /root/.docker/config.json 
   stage: build
   script:
     - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
