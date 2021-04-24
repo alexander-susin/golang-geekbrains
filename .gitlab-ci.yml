@@ -1,4 +1,4 @@
-image: malkinfedor/golang-gitlab-image:1.16.1
+image: malkinfedor/golang-gitlab-image:1.15.1
 
 stages:
   - test
