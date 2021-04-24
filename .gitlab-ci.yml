@@ -36,16 +36,17 @@ memory_sanitizer:
 #  script:
 #    - golint -set_exit_status
 
-build:
-  stage: build
-  artifacts:
-    paths:
-      - golang-helloworld
-    expire_in: 1 week
-  script:
-    - go build -i -v
+#build:
+#  stage: build
+#  artifacts:
+#    paths:
+#      - golang-helloworld
+#    expire_in: 1 week
+#  script:
+#    - go build -i -v
 
 docker-build:
+  image: docker:19.03.13
   services:
     - docker:19.03.13-dind
   stage: build
