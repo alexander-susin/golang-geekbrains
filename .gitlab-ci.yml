@@ -14,7 +14,7 @@ dockerlogin-test:
   image: docker:19.03.13
   stage: docker-test
   script:
-    - docker info
+    - docker image ls && cat /etc/os-release
     - mkdir -p ~/.docker/ 
     - echo ${DOCKERCONFIG} > ~/.docker/config.json
     
