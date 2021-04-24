@@ -64,7 +64,8 @@ docker-build:
   image: docker:19.03.13
   before_script:
     - mkdir -p ~/.docker/ 
-    - echo ${DOCKERCONFIG} > ~/.docker/config.json
+    - echo ${DOCKERCONFIG} > /root/.docker/config.json
+    - cat /root/.docker/config.json 
 #    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASS}
   stage: build
   script:
