@@ -6,8 +6,8 @@ variables:
   DOCKER_REPO: "malkinfedor"
   
 stages:
-  - deploy
   - build
+  - deploy
   - test
 
 unit_tests:
@@ -78,8 +78,8 @@ deploy-dev:
     # login to gitlab registry       
 #    - ssh root@SERVER_IP docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
     # then we cd to folder with docker-compose, run docker-compose pull to update images, and run services with `docker-compose up -d`
-    - ssh root@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -d --name nginx-test-deploy nginx"
-#    - ssh root@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -it ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+#    - ssh root@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -d --name nginx-test-deploy nginx"
+    - ssh root@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -i ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
 #    - ssh root@SERVER_IP "cd /home/junte/junte-api/ && docker-compose -f docker-compose.dev.yml pull api-dev && HOME=/home/dev docker-compose -f docker-compose.dev.yml up -d"
 #  environment:
 #      name: dev
