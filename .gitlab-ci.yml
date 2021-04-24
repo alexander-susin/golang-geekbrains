@@ -42,6 +42,8 @@ build:
     - go build -i -v
 
 docker-build:
+  services:
+    - docker:19.03.13-dind
   stage: build
   script:
     - docker build -t golang_hello-world:${CI_COMMIT_REF_SLUG} .
