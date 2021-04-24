@@ -8,6 +8,7 @@ variables:
 stages:
   - test
   - build
+  - deploy
 
 unit_tests:
   stage: test
@@ -65,3 +66,11 @@ docker-build:
     - docker push ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
     - echo "The image was succesfully pushed:" ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}   
 
+deploy-dev:
+  stage: deploy
+  image: junte/ssh-agent
+  variables:
+    # should be set up at Gitlab CI env vars
+    SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY
+  script:
+    - ssh root@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -i ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
