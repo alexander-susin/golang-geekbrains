@@ -86,7 +86,3 @@ deploy-dev:
     SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY
   script:
     - ssh root@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -i ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-#  environment:
-#      name: dev
-#  only:
-#    - dev
