@@ -1,6 +1,8 @@
 # helloworld
 
-[![Build Status](https://cloud.drone.io/api/badges/go-training/helloworld/status.svg)](https://cloud.drone.io/go-training/helloworld)
+[![pipeline status](https://gitlab.com/aleksander_susin/golang-helloworld/badges/master/pipeline.svg)](https://gitlab.com/aleksander_susin/golang-helloworld/-/commits/master) [![coverage report](https://gitlab.com/aleksander_susin/golang-helloworld/badges/devops/NOTASK-test-pipeline/coverage.svg)](https://gitlab.com/aleksander_susin/golang-helloworld/-/commits/devops/NOTASK-test-pipeline) [![Go Report Card](https://goreportcard.com/badge/gitlab.com/aleksander_susin/golang-helloworld)](https://goreportcard.com/report/gitlab.com/aleksander_susin/golang-helloworld) [![License MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://img.shields.io/badge/License-MIT-brightgreen.svg)
+
+
 
 Hello World for Golang
 
