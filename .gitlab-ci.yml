@@ -1,4 +1,4 @@
-#image: malkinfedor/golang-gitlab-image:1.15.1
+#image: malkinfedor/golang-gitlab-image:1.15.2
 
 variables:
   DOCKER_IMAGE_NAME: "hello-world" 
@@ -11,50 +11,52 @@ stages:
   - deploy
 
 unit_tests:
-  image: malkinfedor/golang-gitlab-image:1.15.1
+  image: malkinfedor/golang-gitlab-image:1.15.2
   stage: test
   script:
     - go test -short
 
 race_detector:
-  image: malkinfedor/golang-gitlab-image:1.15.1
+  image: malkinfedor/golang-gitlab-image:1.15.2
   stage: test
   script:
     - go test -race -short
 
 memory_sanitizer:
-  image: malkinfedor/golang-gitlab-image:1.15.1
+  image: malkinfedor/golang-gitlab-image:1.15.2
   stage: test
   script:
     - go test -msan -short
 
 code_coverage_report:
-  image: malkinfedor/golang-gitlab-image:1.15.1
+  image: malkinfedor/golang-gitlab-image:1.15.2
   stage: test
+  script:
+    - go test -covermode=count -coverprofile hello-world.cov
+    - go tool cover -html=hello-world.cov -o coverage.html
   artifacts:
     paths:
       - coverage.html
     expire_in: 1 week
-  script:
-    - go test -covermode=count -coverprofile hello-world.cov
-    - go tool cover -html=hello-world.cov -o coverage.html
 
-#code_coverage_report:
-#  image: malkinfedor/golang-gitlab-image:1.15.1
-#  stage: test
-#  script:
-#    - make coverhtml
-#  only:
-#  - master
+junit_tests:
+  image: malkinfedor/golang-gitlab-image:1.15.2
+  stage: test
+  script:
+    - go test -v 2>&1 | go-junit-report -set-exit-code > report.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
 
 lint_code:
-  image: malkinfedor/golang-gitlab-image:1.15.1
+  image: malkinfedor/golang-gitlab-image:1.15.2
   stage: test
   script:
     - golint -set_exit_status
 
 common-build:
-  image: malkinfedor/golang-gitlab-image:1.15.1
+  image: malkinfedor/golang-gitlab-image:1.15.2
   stage: build
   artifacts:
     paths:
