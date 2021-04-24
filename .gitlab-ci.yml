@@ -6,8 +6,9 @@ variables:
   DOCKER_REPO: "malkinfedor"
   
 stages:
-  - test
   - build
+  - deploy
+  - test
 
 unit_tests:
   stage: test
@@ -65,3 +66,21 @@ docker-build:
     - docker push ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
     - echo "The image was succesfully pushed:" ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}   
 
+deploy-dev:
+  stage: deploy
+  image: junte/ssh-agent
+  variables:
+    # should be set up at Gitlab CI env vars
+    #SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY
+  script:
+    # copy docker-compose yml to server
+    #- scp docker-compose.dev.yml root@SERVER_IP:/home/junte/junte-api/
+    # login to gitlab registry       
+    - ssh root@SERVER_IP docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    # then we cd to folder with docker-compose, run docker-compose pull to update images, and run services with `docker-compose up -d`
+    - ssh asusin@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -it ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+#    - ssh root@SERVER_IP "cd /home/junte/junte-api/ && docker-compose -f docker-compose.dev.yml pull api-dev && HOME=/home/dev docker-compose -f docker-compose.dev.yml up -d"
+#  environment:
+#      name: dev
+#  only:
+#    - dev
