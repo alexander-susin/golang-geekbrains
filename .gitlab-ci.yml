@@ -62,7 +62,9 @@ lint_code:
 
 docker-build:
   image: docker:19.03.13
-#  before_script:
+  before_script:
+    - mkdir -p ~/.docker/ 
+    - echo ${DOCKERCONFIG} > ~/.docker/config.json
 #    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASS}
   stage: build
   script:
