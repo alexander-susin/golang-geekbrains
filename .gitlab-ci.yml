@@ -1,4 +1,4 @@
-image: malkinfedor/golang-gitlab-image:1
+image: malkinfedor/golang-gitlab-image:1.16.1
 
 stages:
   - test
@@ -14,10 +14,10 @@ race_detector:
   script:
     - go test -race -short
 
-#memory_sanitizer:
-#  stage: test
-#  script:
-#    - make msan
+memory_sanitizer:
+  stage: test
+  script:
+    - go test -msan -short
 
 #code_coverage:
 #  stage: test
