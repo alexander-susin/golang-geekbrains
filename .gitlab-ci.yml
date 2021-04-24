@@ -61,19 +61,19 @@ lint_code:
 
 docker-build:
   image: docker:19.03.13
-  services:
-    - docker:dind
-#  before_script:
+#  services:
+#    - docker:dind
+  before_script:
 #    - mkdir -p ~/.docker/ 
 #    - cp -r docker-config.json /root/.docker/config.json 
-#    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
+    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
 #    - cat /root/.docker/config.json 
   stage: build
   script:
 #    - docker login -u malkinfedor -p 3165420c-9395-443b-98b0-f19b01d82689
     - echo ${DOCKERHUB_USERNAME}
     - echo ${DOCKERHUB_TOKEN}
-    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
+#    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
     - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
     - docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}  
     - docker run ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
