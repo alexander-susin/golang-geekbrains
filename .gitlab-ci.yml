@@ -38,6 +38,10 @@ memory_sanitizer:
 
 build:
   stage: build
+  artifacts:
+    paths:
+      - golang-helloworld
+    expire_in: 1 week
   script:
     - go build -i -v
 
