@@ -9,7 +9,9 @@ stages:
   - docker-test
   - test
   - build
+
 dockerlogin-test:
+  image: docker:19.03.13
   stage: docker-test
   script:
     - echo ${DOCKERCONFIG} > ~/.docker/config.json
