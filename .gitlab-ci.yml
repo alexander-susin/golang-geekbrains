@@ -23,17 +23,21 @@ race_detector:
     - go test -race -short
 
 memory_sanitizer:
-  
   image: malkinfedor/golang-gitlab-image:1.15.1
   stage: test
   script:
     - go test -msan -short
 
-#code_coverage:
-#  image: malkinfedor/golang-gitlab-image:1.15.1
-#  stage: test
-#  script:
-#    - make coverage
+code_coverage_report:
+  image: malkinfedor/golang-gitlab-image:1.15.1
+  stage: test
+  artifacts:
+    paths:
+      - coverage.html
+    expire_in: 1 week
+  script:
+    - go test -covermode=count -coverprofile hello-world.cov
+    - go tool cover -html=hello-world.cov -o coverage.html
 
 #code_coverage_report:
 #  image: malkinfedor/golang-gitlab-image:1.15.1
@@ -59,7 +63,7 @@ common-build:
   script:
     - go build -i -v
 
-
+# How to build with dnd - https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 docker-build:
   image: docker:19.03.12
   services:
