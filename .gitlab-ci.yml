@@ -6,17 +6,9 @@ variables:
   DOCKER_REPO: "malkinfedor"
   
 stages:
-  - build
   - test
+  - build
 
-#dockerlogin-test:
-#  image: docker:19.03.13
-#  stage: docker-test
-#  script:
-#    - docker image ls && cat /etc/os-release
-#    - mkdir -p ~/.docker/ 
-#    - echo ${DOCKERCONFIG} > ~/.docker/config.json
-    
 unit_tests:
   stage: test
   script:
@@ -49,14 +41,14 @@ lint_code:
   script:
     - golint -set_exit_status
 
-#common-build:
-#  stage: build
-#  artifacts:
-#    paths:
-#      - golang-helloworld
-#    expire_in: 1 week
-#  script:
-#    - go build -i -v
+common-build:
+  stage: build
+  artifacts:
+    paths:
+      - golang-helloworld
+    expire_in: 1 week
+  script:
+    - go build -i -v
 
 
 docker-build:
@@ -64,15 +56,9 @@ docker-build:
   services:
     - docker:dind
   before_script:
-#    - mkdir -p ~/.docker/ 
-#    - cp -r docker-config.json /root/.docker/config.json 
     - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
-#    - cat /root/.docker/config.json 
   stage: build
   script:
-    - echo ${DOCKERHUB_USERNAME}
-    - echo ${DOCKERHUB_TOKEN}
-#    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
     - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
     - docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}  
     - docker run ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
