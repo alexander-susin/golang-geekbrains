@@ -31,10 +31,10 @@ memory_sanitizer:
 #  only:
 #  - master
 
-lint_code:
-  stage: test
-  script:
-    - golint -set_exit_status
+#lint_code:
+#  stage: test
+#  script:
+#    - golint -set_exit_status
 
 build:
   stage: build
