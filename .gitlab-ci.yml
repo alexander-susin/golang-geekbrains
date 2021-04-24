@@ -40,3 +40,9 @@ build:
   stage: build
   script:
     - go build -i -v
+
+docker-build:
+  stage: build
+  script:
+    - docker build -t golang_hello-world:${CI_COMMIT_REF_SLUG} .
+    - docker run golang_hello-world:${CI_COMMIT_REF_SLUG}
