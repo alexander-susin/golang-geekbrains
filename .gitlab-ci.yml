@@ -86,6 +86,6 @@ deploy-dev:
   image: malkinfedor/ssh-agent:1 # junte/ssh-agent
   variables:
     # should be set up at Gitlab CI env vars
-    SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY
+    SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY_MAIL
   script:
-    - ssh root@ansible-jenkins.northeurope.cloudapp.azure.com "docker run -i ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+    - ssh root@146.185.209.109 "docker run -i ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
