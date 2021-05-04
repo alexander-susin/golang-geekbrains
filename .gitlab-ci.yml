@@ -69,8 +69,8 @@ stages:
 # How to build with dnd - https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 docker-build:
   image: docker:19.03.12
-  services:
-    - docker:19.03.12-dind
+  #  services:
+  #    - docker:19.03.12-dind
   before_script:
     - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
   stage: build
