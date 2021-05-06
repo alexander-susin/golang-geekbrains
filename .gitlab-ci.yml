@@ -87,15 +87,12 @@ docker-build:gitlab-registry:
   services:
     - docker:19.03.12-dind
   before_script:
-    - echo $CI_BUILD_TOKEN
-    - echo $CI_REGISTRY  
     - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
-    #  - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   stage: build
   script:
     - echo $DOCKERHUB_TOKEN
     - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
-    - docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}  
+    - docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${CI_REGISTRY_IMAGE}:${DOCKER_TAG}  
     - docker run ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
     - docker push ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
     - echo "The image was succesfully pushed:" ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}   
