@@ -7,9 +7,9 @@ variables:
   GITLAB_CONT_REGISTRY_IMG_TAG: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
   
 stages:
+  - test
   - build
   - deploy
-  - test
 
 unit_tests:
   image: malkinfedor/golang-gitlab-image:1.15.2
@@ -97,3 +97,12 @@ docker-build:gitlab-registry:
     - docker run ${GITLAB_CONT_REGISTRY_IMG_TAG}
     - docker push ${GITLAB_CONT_REGISTRY_IMG_TAG}
     - echo "The image was succesfully pushed:" ${GITLAB_CONT_REGISTRY_IMG_TAG}
+
+deploy-dev:
+  stage: deploy
+  image: malkinfedor/ssh-agent:1
+  variables:
+    # should be set up at Gitlab CI env vars
+    SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY_MAIL
+  script:
+    - ssh root@146.185.209.109 "docker run -i ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
