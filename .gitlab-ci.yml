@@ -7,9 +7,9 @@ variables:
   GITLAB_CONT_REGISTRY_IMG_TAG: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
   
 stages:
+  - test
   - build
   - deploy
-  - test
 
 unit_tests:
   image: malkinfedor/golang-gitlab-image:1.15.2
