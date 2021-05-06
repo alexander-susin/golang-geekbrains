@@ -8,7 +8,6 @@ variables:
 stages:
   - test
   - build
-  - deploy
 
 unit_tests:
   image: malkinfedor/golang-gitlab-image:1.15.2
@@ -38,6 +37,7 @@ code_coverage_report:
     paths:
       - coverage.html
     expire_in: 1 week
+  when: manual
 
 # https://docs.gitlab.com/ee/ci/unit_test_reports.html#go-example
 junit_tests:
@@ -53,9 +53,11 @@ junit_tests:
 lint_code:
   image: malkinfedor/golang-gitlab-image:1.15.2
   stage: test
+  allow_failure: true 
   script:
     - golint -set_exit_status
 
+      
 common-build:
   image: malkinfedor/golang-gitlab-image:1.15.2
   stage: build
@@ -66,26 +68,3 @@ common-build:
   script:
     - go build -i -v
 
-# How to build with dnd - https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
-docker-build:
-  image: docker:19.03.12
-  services:
-    - docker:19.03.12-dind
-  before_script:
-    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
-  stage: build
-  script:
-    - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
-    - docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}  
-    - docker run ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
-    - docker push ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
-    - echo "The image was succesfully pushed:" ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}   
-
-deploy-dev:
-  stage: deploy
-  image: malkinfedor/ssh-agent:1 # junte/ssh-agent
-  variables:
-    # should be set up at Gitlab CI env vars
-    SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY_MAIL
-  script:
-    - ssh root@146.185.209.109 "docker run -i ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
