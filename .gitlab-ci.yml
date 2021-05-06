@@ -63,7 +63,6 @@ common-build:
   artifacts:
     paths:
       - $CI_PROJECT_NAME
-      #      - golang-helloworld
     expire_in: 1 week
   script:
     - go build -i -v
