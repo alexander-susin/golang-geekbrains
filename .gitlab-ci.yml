@@ -67,7 +67,7 @@ common-build:
     - go build -i -v
 
 # How to build with dnd - https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
-docker-build:
+docker-build:dockerhub:
   image: docker:19.03.12
   services:
     - docker:19.03.12-dind
@@ -75,15 +75,36 @@ docker-build:
     - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
   stage: build
   script:
+    - echo $DOCKERHUB_TOKEN
     - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
     - docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}  
     - docker run ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
     - docker push ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
     - echo "The image was succesfully pushed:" ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}   
 
+docker-build:gitlab-registry:
+  image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
+  before_script:
+    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
+  stage: build
+  script:
+    - echo $DOCKERHUB_TOKEN
+    - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
+    - docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}  
+    - docker run ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
+    - docker push ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
+    - echo "The image was succesfully pushed:" ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}   
+
+
+docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+
+
+
 deploy-dev:
   stage: deploy
-  image: malkinfedor/ssh-agent:1 # junte/ssh-agent
+  image: malkinfedor/ssh-agent:1 
   variables:
     # should be set up at Gitlab CI env vars
     SSH_PRIVATE_KEY: $SSH_DEV_PRIVATE_KEY_MAIL
