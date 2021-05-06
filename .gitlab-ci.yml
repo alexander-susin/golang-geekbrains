@@ -87,7 +87,7 @@ docker-build:gitlab-registry:
   services:
     - docker:19.03.12-dind
   before_script:
-    - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
+    - docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   stage: build
   script:
     - echo $DOCKERHUB_TOKEN
@@ -98,7 +98,6 @@ docker-build:gitlab-registry:
     - echo "The image was succesfully pushed:" ${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}   
 
 
-docker login -u $CI_JOB_USER -p $CI_JOB_TOKEN $CI_REGISTRY
 
 
 
