@@ -9,7 +9,6 @@ variables:
 stages:
   - test
   - build
-  - deploy
 
 unit_tests:
   image: malkinfedor/golang-gitlab-image:1.15.2
